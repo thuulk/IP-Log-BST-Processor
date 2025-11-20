@@ -1,6 +1,8 @@
 #ifndef BST_H
 #define BST_H
 #include "node.h"
+#include <fstream>
+#include <sstream>
 
 class BST {
 
@@ -26,9 +28,26 @@ class BST {
        std::cout << std::endl;
     }
 
+    void reverseInOrderTopTier(Node* root, std::vector<std::pair<std::string, size_t>>& result, size_t& topTier) const {
+        /*
+        let result be a vector of pairs where IP spotted are storaged from greatest-to-less order
+        let topTier represent the number of IP vectors to print in greatest-to-less order of accessNum
+        */
+
+    }
+
+    void destructor(Node* root) {
+        if (!root) return;
+        destructor(root->left);
+        destructor(root->right);
+        delete root;
+    }
+
+
     public:
     // ============= encapsulating methods =============
-    BST() : root(nullptr) {}
+    BST() : root(nullptr) {} // constructor
+    ~BST() { destructor(root); } // liberating memory
 
 
 
