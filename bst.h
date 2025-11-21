@@ -46,10 +46,10 @@ class BST {
         reverseInOrderTopTier(root->left, ipByAccess, topTier); // recorriendo recursivamente desde el nodo con key mas grande hasta al nodo con menor key
     }
 
-    void destructor(Node* root) { // liberating memory from the BST
+    void freeTree(Node* root) { // liberating memory from the BST
         if (!root) return;
-        destructor(root->left);
-        destructor(root->right);
+        freeTree(root->left);
+        freeTree(root->right);
         delete root;
     }
 
@@ -57,12 +57,22 @@ class BST {
     public:
     // ============= encapsulating methods =============
     BST() : root(nullptr) {} // constructor
-    ~BST() { destructor(root); } // liberating memory
+    ~BST() { freeTree(root); } // liberating memory
+
+    void insert(const size_t& key, const std::string& ip) { root = insertIp(root, key, ip); }
+
+    std::unordered_map<std::string, size_t> topTier(size_t& remaining) {
+        std::unordered_map<std::string, size_t> topT;
+        reverseInOrderTopTier(root, topT, remaining);
+    }
+
+    void print() { reverseInOrder(root); }
+
 
 
 
 
 };
 
-#endif BST_H
+#endif
 

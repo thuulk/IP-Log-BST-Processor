@@ -14,7 +14,10 @@ class Node {
     // ============= methods =============
     Node(size_t accessNum, std::vector<std::string> ips) // constructor
         : accessNum(accessNum), ips(ips), left(nullptr), right(nullptr) {}
+    
+    Node(size_t accesNum, std::string ip)
+        : accessNum(accessNum), ips{ip}, left(nullptr), right(nullptr) {}
 
 };
 
-#endif NODE_H
+#endif 
