@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 
+
 class BST {
 
     
@@ -15,8 +16,8 @@ class BST {
     // ============= private methods =============
     Node* insertIp(Node* root, const size_t& key, const std::string& ip) { // Inserting recursively the new ip into its node by accessNum
         if (!root) return new Node(key, ip); 
-        else if (key > root->accessNum) insertIp(root->right, key, ip); // buscando recursivamente al nodo que tenga una 
-        else if (key < root->accessNum) insertIp(root->left, key, ip);
+        else if (key > root->accessNum) root->right = insertIp(root->right, key, ip); // buscando recursivamente al nodo que tenga una 
+        else if (key < root->accessNum) root->left = insertIp(root->left, key, ip);
         else root->ips.push_back(ip);
         return root;
     }
@@ -64,6 +65,7 @@ class BST {
     std::unordered_map<std::string, size_t> topTier(size_t& remaining) {
         std::unordered_map<std::string, size_t> topT;
         reverseInOrderTopTier(root, topT, remaining);
+        return topT;
     }
 
     void print() { reverseInOrder(root); }
