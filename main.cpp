@@ -25,24 +25,24 @@ int main() {
         }
 
         size_t k = 5;
-        auto topMap = tree.topTier(k);               // unordered_map<ip, accesos>
+        auto topMap = tree.topTier(k);               
 
         if (topMap.empty()) {
             std::cout << "No se encontraron IPs en la bitácora.\n";
             return 0;
         }
 
-        // Pasar el unordered_map a un vector para poder ordenarlo de mayor a menor
+        
         std::vector<std::pair<std::string, std::size_t>> topVec(
             topMap.begin(), topMap.end()
         );
 
         std::sort(topVec.begin(), topVec.end(),
                   [](const auto& a, const auto& b) {
-                      return a.second > b.second; // ordenar por accesos descendente
+                      return a.second > b.second; 
                   });
 
-        // 4) Imprimir las 5 IPs con más accesos (o menos si no hay tantas)
+        
         std::cout << "\n===== Top 5 IPs con mas accesos =====\n";
         std::size_t limite = std::min<std::size_t>(5, topVec.size());
 
