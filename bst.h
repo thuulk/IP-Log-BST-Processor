@@ -1,9 +1,7 @@
 #ifndef BST_H
 #define BST_H
 #include "node.h"
-#include <unordered_map>
-#include <fstream>
-#include <sstream>
+#include "import.h"
 
 
 class BST {
@@ -14,6 +12,16 @@ class BST {
     Node* root;
 
     // ============= private methods =============
+    void buildFromFile(const std::string& filename) {
+        Importation imp;
+
+        std::unordered_map<std::string, size_t> ipCount = imp.loadLogs(filename); // loading to the hash-map all of the data
+        freeTree(root); // always freeing a previous tree
+        root = nullptr;
+
+        for (const auto& par : ipCount) insert(par.second, par.first); // inserting hash-map data into the BST 
+    }
+
     Node* insertIp(Node* root, const size_t& key, const std::string& ip) { // Inserting recursively the new ip into its node by accessNum
         if (!root) return new Node(key, ip); 
         else if (key > root->accessNum) root->right = insertIp(root->right, key, ip); // buscando recursivamente al nodo que tenga una 
