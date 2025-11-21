@@ -1,6 +1,7 @@
 #ifndef BST_H
 #define BST_H
 #include "node.h"
+#include <unordered_map>
 #include <fstream>
 #include <sstream>
 
@@ -13,8 +14,8 @@ class BST {
 
     // ============= private methods =============
     Node* insertIp(Node* root, const size_t& key, const std::string& ip) { // Inserting recursively the new ip into its node by accessNum
-        if (!root) return nullptr;
-        else if (key > root->accessNum) insertIp(root->right, key, ip);
+        if (!root) return new Node(key, ip); 
+        else if (key > root->accessNum) insertIp(root->right, key, ip); // buscando recursivamente al nodo que tenga una 
         else if (key < root->accessNum) insertIp(root->left, key, ip);
         else root->ips.push_back(ip);
         return root;
@@ -28,15 +29,24 @@ class BST {
        std::cout << std::endl;
     }
 
-    void reverseInOrderTopTier(Node* root, std::vector<std::pair<std::string, size_t>>& result, size_t& topTier) const {
+    void reverseInOrderTopTier(Node* root, std::unordered_map <std::string, size_t>& ipByAccess, size_t& topTier) const {
         /*
-        let result be a vector of pairs where IP spotted are storaged from greatest-to-less order
+        let ipByAccess be a hash-map of pairs where IP spotted are storaged from greatest-to-less order
         let topTier represent the number of IP vectors to print in greatest-to-less order of accessNum
         */
 
+        if (!root || topTier <= 0) return; // terminar las llamadas recursivas en caso de que el siguiente nodo a llamar sea nullptr o ya haya acabado el top tier
+        reverseInOrderTopTier(root->right, ipByAccess, topTier); // llegar recursivamente al nodo que tenga las ips mas accesadas segun los logs
+        for (const std::string& ip : root->ips) { // iterando sobre el vector de ips para almacenarlos en el hashmap
+            if (topTier <= 0) break;
+            ipByAccess[ip] = root->accessNum;
+            topTier--;
+        }
+
+        reverseInOrderTopTier(root->left, ipByAccess, topTier); // recorriendo recursivamente desde el nodo con key mas grande hasta al nodo con menor key
     }
 
-    void destructor(Node* root) {
+    void destructor(Node* root) { // liberating memory from the BST
         if (!root) return;
         destructor(root->left);
         destructor(root->right);
